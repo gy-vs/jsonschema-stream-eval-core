@@ -1,0 +1,1 @@
+import{expect,it}from'vitest';import{validate}from'../src/index.js';it('validates',()=>expect(validate({type:'string'},3)).toHaveLength(1));
