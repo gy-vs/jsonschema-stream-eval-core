@@ -1,3 +1,9 @@
-export type Schema={type?:'string'|'number'|'object'|'array';required?:string[];properties?:Record<string,Schema>;items?:Schema};
-export type Issue={path:string;message:string};
-export function validate(schema:Schema,value:unknown,path='#'):Issue[]{const issues:Issue[]=[];if(schema.type==='string'&&typeof value!=='string')issues.push({path,message:'expected string'});if(schema.type==='number'&&typeof value!=='number')issues.push({path,message:'expected number'});if(schema.type==='object'&&value&&typeof value==='object'&&!Array.isArray(value)){const row=value as Record<string,unknown>;for(const key of schema.required??[])if(!(key in row))issues.push({path:path+'/'+key,message:'required'});for(const [key,child] of Object.entries(schema.properties??{}))if(key in row)issues.push(...validate(child,row[key],path+'/'+key))}return issues}
+export type { Issue, IssueCode, Schema, SchemaType, StreamIssue } from './schema.js';
+export { canonicalOf, ptrEscape } from './schema.js';
+export { validate } from './tree.js';
+export type { Token } from './tokenizer.js';
+export { Tokenizer } from './tokenizer.js';
+export type { CompileIssue, CompileResult, Node, Program } from './compile.js';
+export { compileStream, STREAMABLE_KEYWORDS, StreamCompileError } from './compile.js';
+export type { StreamOptions, StreamValidator } from './stream.js';
+export { createStreamValidator, cyrb53, validateStream } from './stream.js';
